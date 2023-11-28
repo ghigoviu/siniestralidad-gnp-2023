@@ -1,27 +1,42 @@
 package com.capufe.siniestralidad1.Siniestros;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/siniestros")
+@RequestMapping("/app")
 public class SiniestroController {
 
-    @GetMapping("/{id}")
-    public SiniestroDTO encontrarPorId(@PathVariable String id) {
+    @Autowired
+    SiniestroService siniestroService;
 
+    @GetMapping("/")
+    public String helloWorld() {
+        return "Hola Mundo";
     }
 
-    @PostMapping
-    public SiniestroDTO crear(@RequestBody SiniestroDTO) {
-
+    @GetMapping("/siniestros")
+    public List<SiniestroModel> findAll() {
+        return siniestroService.findAll();
     }
 
-    @PutMapping("/{id}")
-    public void actualizar(@PathVariable( "id" ) String id, @RequestBody SiniestroDTO usuario) {
+    @GetMapping("/siniestros/{id}")
+    @ResponseBody
+    public SiniestroModel fingById(@PathVariable Long id) {
+        return siniestroService.findById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable( "id" ) String id) {
+    @PostMapping("/siniestros")
+    @ResponseBody
+    public SiniestroModel save(@RequestBody SiniestroModel siniestroModel){
+        return siniestroService.save(siniestroModel);
+    }
+
+    @DeleteMapping("/siniestros/{id}")
+    public void delete(@PathVariable( "id" ) Long id) {
+        siniestroService.delete(id);
     }
 
 }
